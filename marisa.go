@@ -1,7 +1,11 @@
 package marisa
+
 // #include "cmarisa.h"
+// #include <stdlib.h>
 // #cgo LDFLAGS: -lmarisa
 import "C"
+import "runtime"
+import "unsafe"
 
 type KeySet struct {
 	keyset *C.KeySet
@@ -12,25 +16,32 @@ type Trie struct {
 }
 
 // KeySet
-func NewKeySet() (self KeySet) {
-	self.keyset = C.keyset_create()
-	return
+func NewKeySet() *KeySet {
+	self := &KeySet{C.keyset_create()}
+	runtime.SetFinalizer(self, (*KeySet).free)
+	return self
+}
+
+func (self *KeySet) free() {
+	C.keyset_destroy(self.keyset)
 }
 
 func (self *KeySet) Push(s string, weight int) {
 	cs := C.CString(s)
 	l := len(s)
 	C.keyset_push(self.keyset, cs, C.int(l), C.int(weight))
-}
-
-func (self *KeySet) Free() {
-    C.keyset_destroy(self.keyset)
+	C.free(unsafe.Pointer(cs))
 }
 
 // Trie
-func NewTrie() (self Trie) {
-	self.trie = C.trie_create()
-	return
+func NewTrie() *Trie {
+	self := &Trie{C.trie_create()}
+	runtime.SetFinalizer(self, (*Trie).free)
+	return self
+}
+
+func (self *Trie) free() {
+	C.trie_destroy(self.trie)
 }
 
 func (self *Trie) Build(ks KeySet, flags int) {
@@ -40,4 +51,5 @@ func (self *Trie) Build(ks KeySet, flags int) {
 func (self *Trie) Save(path string) {
 	cpath := C.CString(path)
 	C.trie_save(self.trie, cpath)
+	C.free(unsafe.Pointer(cpath))
 }

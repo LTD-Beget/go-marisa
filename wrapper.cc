@@ -41,12 +41,17 @@ extern "C" {
 		return t;
 	}
 
-	void trie_build(Trie *tr, KeySet *ks, int options) {
+	void trie_build(Trie *tr, struct KeySet *ks, int options) {
 		tr->trie->build(*ks->keyset, options);
 	}
 
 	void trie_save(Trie *tr, const char *filename) {
 		tr->trie->save(filename);
+	}
+
+	void trie_destroy(Trie *tr) {
+		delete(tr->trie);
+		tr->trie = NULL;
 	}
 
 	void trie_mmap(Trie *tr, const char *filename) {
@@ -79,5 +84,4 @@ extern "C" {
 	bool predictive_search(Trie *t, Agent *a) {
 		t->trie->predictive_search(*a->agent);
 	}
-
 }

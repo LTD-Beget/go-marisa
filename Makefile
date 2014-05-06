@@ -1,2 +1,2 @@
 wrapper.o: wrapper.cc
-	g++ -c wrapper.cc -o wrapper.o
+	g++ -Wall -c wrapper.cc -o wrapper.o

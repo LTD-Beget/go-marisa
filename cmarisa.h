@@ -18,6 +18,7 @@ void keyset_destroy(KeySet*);
 Trie *trie_create(void);
 void trie_build(Trie*, KeySet*, int);
 void trie_save(Trie*, const char *);
+void trie_destroy(Trie*);
 void mmap(Trie*, const char *);
 
 Agent *agent_create(void);
