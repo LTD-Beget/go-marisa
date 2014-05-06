@@ -18,12 +18,14 @@ type Trie struct {
 // KeySet
 func NewKeySet() *KeySet {
 	self := &KeySet{C.keyset_create()}
-	runtime.SetFinalizer(self, (*KeySet).free)
+	runtime.SetFinalizer(self, (*KeySet).Free)
 	return self
 }
 
-func (self *KeySet) free() {
-	C.keyset_destroy(self.keyset)
+func (self *KeySet) Free() {
+    if self.keyset != nil {
+        C.keyset_destroy(self.keyset)
+    }
 }
 
 func (self *KeySet) Push(s string, weight int) {
@@ -36,12 +38,14 @@ func (self *KeySet) Push(s string, weight int) {
 // Trie
 func NewTrie() *Trie {
 	self := &Trie{C.trie_create()}
-	runtime.SetFinalizer(self, (*Trie).free)
+	runtime.SetFinalizer(self, (*Trie).Free)
 	return self
 }
 
-func (self *Trie) free() {
-	C.trie_destroy(self.trie)
+func (self *Trie) Free() {
+    if self.trie != nil {
+        C.trie_destroy(self.trie)
+    }
 }
 
 func (self *Trie) Build(ks KeySet, flags int) {
