@@ -29,6 +29,10 @@ extern "C" {
 		ks->keyset->push_back(str, len, value);
 	}
 
+	void keyset_destroy(KeySet *ks) {
+		delete(ks->keyset);
+	}
+
 	Trie *trie_create(void) {
 		Trie *t = (Trie*)malloc(sizeof(Trie));
 

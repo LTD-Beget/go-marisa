@@ -13,6 +13,7 @@ typedef struct Agent {
 
 KeySet *keyset_create(void);
 void keyset_push(KeySet*, const char*, int, int);
+void keyset_destroy(KeySet*);
 
 Trie *trie_create(void);
 void trie_build(Trie*, KeySet*, int);

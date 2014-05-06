@@ -23,6 +23,10 @@ func (self *KeySet) Push(s string, weight int) {
 	C.keyset_push(self.keyset, cs, C.int(l), C.int(weight))
 }
 
+func (self *KeySet) Free() {
+    C.keyset_destroy(self.keyset)
+}
+
 // Trie
 func NewTrie() (self Trie) {
 	self.trie = C.trie_create()
