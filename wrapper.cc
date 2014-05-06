@@ -31,6 +31,7 @@ extern "C" {
 
 	void keyset_destroy(KeySet *ks) {
 		delete(ks->keyset);
+		ks->keyset = NULL;
 	}
 
 	Trie *trie_create(void) {
